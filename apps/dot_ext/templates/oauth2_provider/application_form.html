@@ -1,0 +1,56 @@
+{% extends "oauth2_provider/base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <!-- CI_TESTING:START -->
+    <!-- test_dot_ext_application_registration -->
+    <!-- CI_TESTING:END -->
+    <div class="row">
+        <div class="ds-col-lg-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url "oauth2_provider:list" %}">{% trans "Created Applications" %}</a></li>
+                <li class="active"><a href="">{% trans "Edit" %}</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="block-center">
+        <form class="form-horizontal" method="post" action="{% block app-form-action-url %}{% url 'oauth2_provider:update' application.id %}{% endblock app-form-action-url %}">
+            <h3 class="ds-h3">
+                {% block app-form-title %}
+                {% trans "Edit Application" %} {{ application.name }}
+                {% endblock app-form-title %}
+            </h3>
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="control-group {% if field.errors %}error{% endif %}">
+                    <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <div class="controls">
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <span class="help-inline">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="control-group {% if form.non_field_errors %}error{% endif %}">
+                {% for error in form.non_field_errors %}
+                    <span class="help-inline">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <a class="btn" href="{% block app-form-back-url %}{% url "oauth2_provider:detail" application.id %}{% endblock app-form-back-url %}">
+                        {% trans "Go Back" %}
+                    </a>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

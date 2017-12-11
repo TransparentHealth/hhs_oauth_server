@@ -1,0 +1,11 @@
+{% extends "design_system/base.html" %}
+{% load i18n %}
+
+{% block Content %}
+      <p>
+         <a href="{% url 'social:begin' settings.SOCIAL_AUTH_BACKEND_NAME %}?next={{ request.GET.next | urlencode }}"  role="button">{% trans "Login with" %} {{settings.EXTERNAL_AUTH_NAME}}</a>
+     </p>
+      
+     <p>If you are a developer then <a href ="{% url 'mfa_login' %}?next={{ request.GET.next | urlencode }}" > login here instead</a>.</p>
+     
+{% endblock %}
